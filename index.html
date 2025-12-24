@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giáng Sinh An Lành 🎄</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:radial-gradient(circle,#004d00,#008000);
+  font-family:Arial, sans-serif;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* ===== SNOW ===== */
+.snowflakes{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.snowflake{
+  position:absolute;
+  top:-10px;
+  width:8px;height:8px;
+  background:white;
+  border-radius:50%;
+  opacity:.8;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(120vh) rotate(360deg)}
+}
+
+/* ===== IMAGE ===== */
+.container{
+  position:relative;
+  z-index:2;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.image-wrapper{
+  position:relative;
+}
+
+.main-img{
+  max-width:95%;
+  max-height:90vh;
+  border-radius:10px;
+  border:5px solid white;
+  box-shadow:0 15px 30px rgba(0,0,0,.4);
+  display:block;
+}
+
+/* ===== WHITE COVER ===== */
+.cover{
+  position:absolute;
+  inset:0;
+  background:white;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1.1em;
+  font-weight:bold;
+  color:#444;
+  transition:opacity .6s ease;
+}
+
+.cover.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* ===== OVERLAY ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+.overlay.active{display:flex}
+.overlay img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
+  border:3px solid white;
+}
+.close-btn{
+  position:absolute;
+  top:20px;right:20px;
+  padding:10px 16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* ===== MUSIC BUTTON ===== */
+.music-btn{
+  position:fixed;
+  bottom:20px;right:20px;
+  z-index:5;
+  padding:12px 16px;
+  background:white;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* ===== TITLE ===== */
+.title{
+  position:fixed;
+  top:20px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:2em;
+  z-index:3;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SNOW -->
+<div class="snowflakes">
+  <div class="snowflake" style="left:10%;animation-duration:12s"></div>
+  <div class="snowflake" style="left:30%;animation-duration:16s"></div>
+  <div class="snowflake" style="left:50%;animation-duration:18s"></div>
+  <div class="snowflake" style="left:70%;animation-duration:14s"></div>
+  <div class="snowflake" style="left:90%;animation-duration:20s"></div>
+</div>
+
+<!-- IMAGE -->
+<div class="container">
+  <div class="image-wrapper">
+    <img src="letterfromZtoHung.png" class="main-img" id="mainImg">
+    <div class="cover" id="cover"> 🎄 MERRY CHRISTMAS - GỬI HƯNG (aiu của Z) 🎄</div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <button class="close-btn" id="closeBtn">Đóng</button>
+  <img id="overlayImg">
+</div>
+
+<!-- MUSIC -->
+<div class="music-btn" id="musicBtn">🔇 Tắt nhạc</div>
+<audio id="bgMusic" loop>
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const cover = document.getElementById('cover');
+const img = document.getElementById('mainImg');
+const overlay = document.getElementById('overlay');
+const overlayImg = document.getElementById('overlayImg');
+const closeBtn = document.getElementById('closeBtn');
+
+const music = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+
+let musicOn = false;
+
+/* ===== CLICK COVER ===== */
+cover.addEventListener('click', () => {
+  cover.classList.add('hidden');
+
+  music.volume = 0.7;
+  music.play().catch(()=>{});
+  musicOn = true;
+  musicBtn.textContent = '🔇 Tắt nhạc';
+});
+
+/* ===== IMAGE CLICK (ZOOM) ===== */
+img.addEventListener('click', () => {
+  if (!cover.classList.contains('hidden')) return;
+  overlayImg.src = img.src;
+  overlay.classList.add('active');
+});
+
+/* ===== CLOSE ===== */
+closeBtn.onclick = () => overlay.classList.remove('active');
+
+/* ===== MUSIC BUTTON ===== */
+musicBtn.onclick = () => {
+  if (musicOn) {
+    music.pause();
+    musicBtn.textContent = '🔊 Bật nhạc';
+  } else {
+    music.volume = 0.7;
+    music.play();
+    musicBtn.textContent = '🔇 Tắt nhạc';
+  }
+  musicOn = !musicOn;
+};
+</script>
+
+</body>
+</html>
